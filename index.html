@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Barbery Huelva</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
   <script>
+    // Modo oscuro automático
+    window.onload = function () {
+      const hour = new Date().getHours();
+      if (hour < 7 || hour > 19) document.body.classList.add("bg-gray-900", "text-white");
+    };
+
     function reservarCita() {
       const nombre = document.getElementById('nombre').value;
       const fecha = document.getElementById('fecha').value;
@@ -17,72 +21,126 @@
         alert("Por favor, completa todos los campos.");
         return;
       }
-      alert(`¡Gracias ${nombre}! Tu cita ha sido reservada para el ${fecha} a las ${hora}.`);
+      const mensaje = document.getElementById('mensaje-cita');
+      mensaje.innerText = `¡Gracias ${nombre}! Tu cita ha sido reservada para el ${fecha} a las ${hora}.`;
+      mensaje.classList.remove('hidden');
+    }
+
+    function togglePrivacidad() {
+      document.getElementById('politicaModal').classList.toggle('hidden');
+    }
+
+    function toggleFAQ(id) {
+      document.getElementById(id).classList.toggle('hidden');
     }
   </script>
   <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-    }
-    h1, h2 {
-      font-family: 'Playfair Display', serif;
-    }
-    .hero {
-      background-image: url('https://images.unsplash.com/photo-1603576661262-3c4e3b0b8e64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
-      background-size: cover;
-      background-position: center;
-    }
+    body { font-family: 'Roboto', sans-serif; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
-  <header class="hero text-white py-20 px-6 shadow-lg">
-    <div class="max-w-4xl mx-auto text-center">
-      <h1 class="text-5xl md:text-6xl font-bold drop-shadow-lg">The Barbery Huelva</h1>
-      <p class="text-2xl mt-4 drop-shadow">Estilo. Precisión. Juventud.</p>
-      <p class="mt-2 text-lg">by Cristian Fernández</p>
-    </div>
+  <!-- HEADER -->
+  <header class="bg-cover bg-center py-20 text-white text-center" style="background-image: url('https://images.unsplash.com/photo-1603576661262-3c4e3b0b8e64');">
+    <h1 class="text-6xl font-bold drop-shadow">The Barbery Huelva</h1>
+    <p class="text-2xl mt-2">by Cristian Fernández</p>
   </header>
 
-  <section class="p-6 max-w-4xl mx-auto">
-    <div class="grid md:grid-cols-2 gap-8 mb-12">
+  <main class="max-w-6xl mx-auto px-4 py-12">
+    <!-- HORARIOS Y RESERVA -->
+    <section class="grid md:grid-cols-2 gap-8">
       <div>
-        <h2 class="text-3xl font-semibold mb-4 border-b pb-2">Horarios</h2>
-        <ul class="text-lg space-y-2">
+        <h2 class="text-3xl font-bold mb-4">Horarios</h2>
+        <ul class="space-y-2">
           <li><strong>Lunes a Viernes:</strong> 10:00 - 14:00 / 17:00 - 21:00</li>
           <li><strong>Sábados:</strong> 10:00 - 14:00</li>
         </ul>
       </div>
       <div>
-        <h2 class="text-3xl font-semibold mb-4 border-b pb-2">Reserva tu cita</h2>
-        <form class="bg-white p-6 rounded-xl shadow-lg space-y-4" onsubmit="event.preventDefault(); reservarCita();">
-          <div>
-            <label class="block text-sm font-medium">Nombre:</label>
-            <input type="text" id="nombre" class="mt-1 p-3 w-full border border-gray-300 rounded-lg" required />
-          </div>
-          <div>
-            <label class="block text-sm font-medium">Fecha:</label>
-            <input type="date" id="fecha" class="mt-1 p-3 w-full border border-gray-300 rounded-lg" required />
-          </div>
-          <div>
-            <label class="block text-sm font-medium">Hora:</label>
-            <input type="time" id="hora" class="mt-1 p-3 w-full border border-gray-300 rounded-lg" required step="1800" min="10:00" max="21:00" />
-            <p class="text-xs text-gray-500">Cada corte tarda entre 30 y 45 minutos</p>
-          </div>
-          <button type="submit" class="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">Reservar</button>
+        <h2 class="text-3xl font-bold mb-4">Reserva tu cita</h2>
+        <form onsubmit="event.preventDefault(); reservarCita();" class="space-y-4 bg-white p-6 rounded-xl shadow">
+          <input id="nombre" type="text" placeholder="Tu nombre" class="w-full p-3 border rounded">
+          <input id="fecha" type="date" class="w-full p-3 border rounded">
+          <input id="hora" type="time" class="w-full p-3 border rounded" step="1800" min="10:00" max="21:00">
+          <button class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Reservar</button>
+          <p id="mensaje-cita" class="text-green-600 hidden"></p>
         </form>
       </div>
-    </div>
+    </section>
 
-    <div class="text-center mt-16">
-      <h2 class="text-3xl font-bold mb-4">Experiencia Premium</h2>
-      <p class="text-lg mb-6">Cada corte es una obra de arte. Vive la diferencia en The Barbery Huelva.</p>
-      <img src="https://images.unsplash.com/photo-1610136428230-01aa2a3d5036?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" class="rounded-xl shadow-md mx-auto w-full max-w-xl" alt="Barbería premium" />
-    </div>
-  </section>
+    <!-- GALERÍA -->
+    <section class="mt-16">
+      <h2 class="text-3xl font-bold text-center mb-6">Galería de Estilos</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <img src="https://source.unsplash.com/400x400/?haircut" class="rounded-lg shadow hover:scale-105 transform transition">
+        <img src="https://source.unsplash.com/400x401/?barber" class="rounded-lg shadow hover:scale-105 transform transition">
+        <img src="https://source.unsplash.com/401x400/?fade" class="rounded-lg shadow hover:scale-105 transform transition">
+        <img src="https://source.unsplash.com/402x400/?beard" class="rounded-lg shadow hover:scale-105 transform transition">
+      </div>
+    </section>
 
+    <!-- TESTIMONIOS -->
+    <section class="mt-16">
+      <h2 class="text-3xl font-bold text-center mb-6">Lo que dicen nuestros clientes</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white p-4 rounded shadow animate-pulse">
+          <p>“La mejor barbería de Huelva, Cristian tiene manos de oro.”</p>
+          <p class="text-sm text-gray-500 mt-2">- Javier L.</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow animate-pulse">
+          <p>“Servicio impecable y ambiente top. 10/10.”</p>
+          <p class="text-sm text-gray-500 mt-2">- Marta R.</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow animate-pulse">
+          <p>“Nunca había tenido un corte tan bien hecho. Repetiré seguro.”</p>
+          <p class="text-sm text-gray-500 mt-2">- Luis G.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="mt-16">
+      <h2 class="text-3xl font-bold text-center mb-6">Contáctanos</h2>
+      <form class="max-w-xl mx-auto bg-white p-6 rounded shadow space-y-4">
+        <input type="text" placeholder="Nombre" class="w-full p-3 border rounded">
+        <input type="email" placeholder="Correo electrónico" class="w-full p-3 border rounded">
+        <textarea placeholder="Mensaje" rows="4" class="w-full p-3 border rounded"></textarea>
+        <button class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Enviar mensaje</button>
+      </form>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="mt-16 text-center">
+      <h2 class="text-2xl font-bold mb-2">Suscríbete a nuestro boletín</h2>
+      <input type="email" placeholder="Tu correo" class="p-2 w-64 border rounded">
+      <button class="bg-black text-white px-4 py-2 ml-2 rounded hover:bg-gray-800">Suscribirse</button>
+    </section>
+
+    <!-- MAPA -->
+    <section class="mt-16">
+      <h2 class="text-3xl font-bold text-center mb-6">¿Dónde estamos?</h2>
+      <iframe class="w-full h-80 rounded shadow" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12736.15817202973!2d-6.9445481!3d37.2583535!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126e81c0ae376d%3A0x7a76d6b7efc45f0!2sHuelva!5e0!3m2!1ses!2ses!4v1663676884832!5m2!1ses!2ses" allowfullscreen="" loading="lazy"></iframe>
+    </section>
+  </main>
+
+  <!-- CHAT SIMULADO -->
+  <div class="fixed bottom-4 right-4">
+    <button onclick="alert('Hola 👋, ¿en qué puedo ayudarte?')" class="bg-black text-white px-4 py-2 rounded-full shadow-lg hover:bg-gray-800">💬</button>
+  </div>
+
+  <!-- FOOTER -->
   <footer class="bg-black text-white text-center py-6 mt-20">
-    <p class="text-sm">&copy; 2025 The Barbery Huelva - Todos los derechos reservados</p>
-    <p class="text-xs">Diseñado con arte y pasión por Cristian Fernández</p>
+    <p>&copy; 2025 The Barbery Huelva</p>
+    <button onclick="togglePrivacidad()" class="text-blue-400 hover:underline text-sm mt-2">Política de Privacidad</button>
   </footer>
+
+  <!-- MODAL PRIVACIDAD -->
+  <div id="politicaModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded p-6 max-w-md">
+      <h2 class="text-2xl font-bold mb-4">Política de Privacidad</h2>
+      <p class="text-sm mb-4">Tus datos serán usados solo para gestionar tu reserva y no serán compartidos con terceros. Puedes solicitar su eliminación cuando lo desees.</p>
+      <button onclick="togglePrivacidad()" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Cerrar</button>
+    </div>
+  </div>
 </body>
 </html>
