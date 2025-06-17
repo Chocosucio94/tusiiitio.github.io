@@ -83,15 +83,15 @@
     <section class="mt-16">
       <h2 class="text-3xl font-bold text-center mb-6">Lo que dicen nuestros clientes</h2>
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-white p-4 rounded shadow animate-pulse">
+        <div class="bg-white p-4 rounded shadow animate-fade-in">
           <p>“La mejor barbería de Huelva, Cristian tiene manos de oro.”</p>
           <p class="text-sm text-gray-500 mt-2">- Javier L.</p>
         </div>
-        <div class="bg-white p-4 rounded shadow animate-pulse">
+        <div class="bg-white p-4 rounded shadow animate-fade-in delay-100">
           <p>“Servicio impecable y ambiente top. 10/10.”</p>
           <p class="text-sm text-gray-500 mt-2">- Marta R.</p>
         </div>
-        <div class="bg-white p-4 rounded shadow animate-pulse">
+        <div class="bg-white p-4 rounded shadow animate-fade-in delay-200">
           <p>“Nunca había tenido un corte tan bien hecho. Repetiré seguro.”</p>
           <p class="text-sm text-gray-500 mt-2">- Luis G.</p>
         </div>
@@ -142,5 +142,18 @@
       <button onclick="togglePrivacidad()" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Cerrar</button>
     </div>
   </div>
+
+  <!-- ANIMACIONES PERSONALIZADAS -->
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out both;
+    }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+  </style>
 </body>
 </html>
